@@ -1,0 +1,197 @@
+(1) Nobel select
+https://sqlzoo.net/wiki/SELECT_from_Nobel_Tutorial
+
+(a)
+SELECT * FROM nobel WHERE yr=1950;
+
+(b)
+SELECT winner FROM nobel
+    WHERE yr=1962 AND subject='Literature';
+
+(c)
+SELECT yr, subject FROM nobel
+    WHERE winner='Albert Einstein';
+
+(d)
+SELECT winner FROM nobel
+    WHERE yr >= 2000 AND
+    subject = 'Peace';
+
+(e)
+SELECT * FROM nobel
+    WHERE yr >= 1980 AND
+    yr <= 1989 AND
+    subject='Literature';
+
+(f)
+SELECT * FROM nobel
+    WHERE winner IN ('Theodore Roosevelt', 'Woodrow Wilson', 'Jimmy Carter', 'Barack Obama');
+
+(g)
+SELECT winner FROM nobel
+    WHERE winner LIKE 'John %';
+
+(h)
+SELECT * FROM nobel
+    WHERE (yr=1980 AND subject='Physics') OR
+    (yr=1984 AND subject='Chemistry');
+
+(i)
+SELECT * FROM nobel
+    WHERE subject NOT IN ('Chemistry', 'Medicine') AND
+    yr=1980;
+
+(j)
+SELECT * FROM nobel
+    WHERE (yr < 1910 AND subject='Medicine') OR
+    (yr >= 2004 AND subject='Literature');
+
+(k)
+SELECT * FROM nobel
+    WHERE winner='Peter Grünberg';
+
+(l)
+SELECT * FROM nobel
+    WHERE winner='Eugene O\'Neill';
+
+(m)
+SELECT winner, yr, subject FROM nobel
+    WHERE winner LIKE 'Sir %'
+    ORDER BY yr DESC, winner ASC;
+
+(n)
+SELECT winner, subject FROM nobel
+    WHERE yr=1984
+    ORDER BY subject IN('Chemistry', 'Physics') ASC,
+        subject ASC, winner ASC;
+
+
+(2) SELECT within SELECT
+
+(a) 
+SELECT name FROM world
+    WHERE population >
+    (SELECT population FROM world WHERE name='Russia');
+
+(b)
+SELECT name FROM world
+    WHERE continent='Europe' AND gdp/population >
+    (SELECT gdp/population AS percapGDP FROM world
+        WHERE name='United Kingdom');
+
+(c)
+SELECT
+    name, 
+    continent
+FROM world
+WHERE
+    continent IN (SELECT 
+        continent
+    FROM world
+    WHERE name IN ('Argentina', 'Australia'))
+ORDER BY name ASC;
+
+(d)
+SELECT
+    name,
+    population
+FROM world
+WHERE population > (SELECT
+    population
+FROM world
+WHERE name='Canada') 
+AND population < (SELECT 
+    population
+FROM world
+WHERE name='Poland');
+
+(e)
+SELECT
+    name,
+    CONCAT(ROUND(100*(population/(SELECT
+            population
+        FROM world
+        WHERE name='Germany')), 0), '%')
+        AS popPercGermany
+FROM world
+WHERE continent='Europe';
+
+
+(3) SUM and COUNT
+https://sqlzoo.net/wiki/SUM_and_COUNT
+
+(a)
+SELECT sum(population)
+FROM world;
+
+(b)
+SELECT DISTINCT continent
+FROM world;
+
+(c)
+SELECT sum(gdp) AS totGDPAfrica
+FROM (SELECT gdp
+    FROM world
+    WHERE continent='Africa') AS gdpAfrica;
+
+(d)
+SELECT count(name) AS numBigCountries
+FROM (SELECT name
+    FROM world
+    WHERE area >= 1000000) AS bigCountries;
+
+(e)
+SELECT sum(population) AS totBalticPop
+FROM (SELECT population
+    FROM world
+    WHERE name IN ('Estonia', 'Latvia', 'Lithuania')) AS balticPop;
+
+(f)
+SELECT continent, count(name) AS numCountries
+FROM world
+GROUP BY continent;
+
+(g)
+SELECT continent, count(name) AS numCountries
+FROM (SELECT continent, name
+    FROM world
+    WHERE population >= 10000000) AS bigCountries
+GROUP BY continent;
+
+(h)
+SELECT continent
+FROM (SELECT continent, sum(population) AS continentPop
+    FROM world
+    GROUP BY continent) AS bigContinents
+WHERE continentPop >= 100000000;
+
+
+(4) JOIN
+https://sqlzoo.net/wiki/The_JOIN_operation
+
+(a)
+SELECT matchid, player
+FROM goal
+WHERE teamid='GER';
+
+(b)
+SELECT id, stadium, team1, team2
+FROM game
+WHERE id=1012;
+
+(c)
+SELECT player, teamid, stadium, mdate
+FROM game JOIN goal ON(game.id=goal.matchid)
+WHERE teamid='GER';
+
+(d)
+SELECT team1, team2, player
+FROM game JOIN goal ON(game.id=goal.matchid)
+WHERE player LIKE 'Mario %';
+
+(e)
+SELECT player, teamid, coach, gtime
+FROM goal JOIN eteam ON(id=teamid)
+WHERE gtime <= 10;
+
+

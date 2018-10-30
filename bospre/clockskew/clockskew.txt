@@ -1,0 +1,198 @@
+Clock Skew
+----- ----
+
+Integrated circuits chips often use a clock that must be
+distributed to various places where it is used, and must
+be synchronous at these usage sites.  Distribution is
+by a binary tree of gates and by wires.  If the wires
+are of different lengths, the clock will not arrive
+synchronously at all its usage sites.
+
+For example, consider the distribution network:
+
+			clock
+			  |
+			  1
+		   5     / \    7
+                   ------   ------
+		  /               \
+	         2                 3
+	        / \               / \
+	     5 /   \ 8         2 /   \ 4
+	      /     \           /     \
+	     4       5         6       7
+
+which uses a binary tree with 7 nodes numbered 1, 2,
+..., 7 in which the wire lengths are:
+
+    length node 1 to 2 = 5	length node 1 to 3 = 7
+    length node 2 to 4 = 5	length node 2 to 5 = 8
+    length node 3 to 6 = 2	length node 3 to 7 = 4
+
+The lengths of the paths from the root node 1 to the
+leaves 4, 5, 6, and 7 are NOT equal:
+
+	length node 1 to 4 = 5 + 5 = 10
+	length node 1 to 5 = 5 + 8 = 13
+	length node 1 to 6 = 7 + 2 = 9
+	length node 1 to 7 = 7 + 4 = 11
+
+To make the clock arrive synchronously at all leaves,
+we must make the lengths from the root to the leaves,
+equal and it is necessary to lengthen some of the wires.
+But this takes valuable space on the integrated circuit
+chip, so a goal is to keep the total length of all the
+wires minimal.
+
+Consider the following two ways to make the lengths from
+the root in our example to each leaf equal to 13:
+
+Method 1:
+			clock
+			  |
+			  1
+		   5     / \    7
+                   ------   ------
+		  /               \
+	         2                 3
+	        / \               / \
+	   5+3 /   \ 8       2+4 /   \ 4+2
+	      /     \           /     \
+	     4       5         6       7
+
+    length node 1 to 2 = 5	length node 1 to 3 = 7
+    length node 2 to 4 = 5+3	length node 2 to 5 = 8
+    length node 3 to 6 = 2+4	length node 3 to 7 = 4+2
+
+  total length = 5 + 7 + (5+3) + 8 + (2+4) + (4+2) = 40
+
+Method 2:
+			clock
+			  |
+			  1
+		   5     / \    7+2
+                   ------   ------
+		  /               \
+	         2                 3
+	        / \               / \
+	   5+3 /   \ 8       2+2 /   \ 4
+	      /     \           /     \
+	     4       5         6       7
+
+
+    length node 1 to 2 = 5	length node 1 to 3 = 7+2
+    length node 2 to 4 = 5+3	length node 2 to 5 = 8
+    length node 3 to 6 = 2+2	length node 3 to 7 = 4
+
+  total length = 5 + (7+2) + (5+3) + 8 + (2+2) + 4 = 38
+
+The second method is better as the total length is less.
+
+You are being asked to figure out how much length to
+add to various wires of a binary tree clock distribution
+network in order to make the distances from the root to
+the leaves all equal while minimizing the total length
+of all the wires.
+
+
+Notation
+--------
+
+We number the nodes of a binary tree 1, 2, 3, ..., N
+from top to bottom and left to right.  Then the
+children of a non-leaf node n are 2n and 2n+1 and the
+parent of a non-root node n is n/2 (where we use
+integer division that discards the remainder; e.g.,
+3/2 = 1).  N must be one less than a power of 2.
+
+We represent a binary tree with wire lengths by
+taking the form:
+
+    number of nodes = 7
+    length node 1 to 2 = 5	length node 1 to 3 = 7
+    length node 2 to 4 = 5	length node 2 to 5 = 8
+    length node 3 to 6 = 2	length node 3 to 7 = 4
+
+and omitting everything but the numbers after the
+equals signs, so we get:
+
+	7
+	5 7
+	5 8
+	2 4
+
+We will call this a `tree representative'.
+
+
+Input
+-----
+
+For each test case, first a line that gives the test
+case name, and then lines forming a tree representative.
+
+    N = 3, 7, 15, 31, 63, 127, 255, 511, or 1023
+    all wire lengths are between 1 and 10 inclusive
+
+Input terminates with an end of file.  The test case
+name line is at most 80 characters.
+
+
+Output
+------
+
+For each test case, first an exact copy of the test case
+name line, and then the tree representative of the
+binary tree after you have lengthened the wires so that
+
+  (1) The lengths from the root to each leaf are equal.
+  (2) The total of all wire lengths is minimal.
+
+Note that after lengthening some wire lengths may be
+longer than 10.
+
+
+Sample Input
+------ -----
+
+-- SAMPLE 1 --
+7
+5 7
+5 8
+2 4
+-- SAMPLE 2 --
+15
+3 9
+2 3
+6 5
+4 5
+3 1
+6 9
+3 6
+
+
+Sample Output
+------ ------
+
+-- SAMPLE 1 --
+7
+5 9
+8 8
+4 4
+-- SAMPLE 2 --
+15
+17 9
+2 4
+6 9
+5 5
+3 3
+9 9
+6 6
+
+
+File:	   clockskew.txt
+Author:	   Bob Walton <walton@seas.harvard.edu>
+Date:	   Sat Oct  7 14:02:20 EDT 2017
+
+The authors have placed this file in the public domain;
+they make no warranty and accept no liability for this
+file.

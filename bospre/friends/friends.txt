@@ -1,0 +1,117 @@
+Friends in Space
+------- -- -----
+
+The space colony Bad Light consists of a large cluster
+of asteroids what orbits the sun Dim Wit.  The asteroids
+would drift apart, but are held together by wires.
+Conveniently the wires are not required to withstand
+much force, and are also useful for transporting oneself
+between asteroids.  The system of Dim Wit is inhabited
+by the Zkpt, somewhat intelligent creatures we will not
+describe here.
+
+Two pairs of friends are moving to Bad Light and need to
+find apartments on the asteroids.  Zkpts never share an
+apartment and friends never live on the same asteroid.
+One pair of friends is Ba and Da who want to live on
+asteroids as close together as possible.  Another pair
+of friends Gz and Tz want to live as far apart as
+possible (don't ask).
+
+As a real estate broker you need to help both pairs of
+friends.  You have a list of asteroids with available
+apartments and their coordinates relative to a reference
+point.
+
+
+Input
+-----
+
+For each test case, first a line that gives the test
+case name.  Then a line of the form
+
+	N
+
+giving the number of asteroids N.  This is followed by N
+asteroid location lines each of the form
+
+	X Y Z
+	
+giving the coordinates (X,Y,Z) of one asteroid, relative
+to the center of the Bad Light cluster.  All coordinates
+are integers.
+
+	-1000 <= X,Y,Z <= 1,000
+	3 <= N <= 100
+
+For identification purposes the asteroids are numbered
+1, ..., N in the order that their location lines are
+given.
+
+Input terminates with an end of file.  The test case
+name line is at most 80 characters.
+
+
+Output
+------
+
+For each test case, first an exact copy of the test case
+name line.  Then a second line of the form
+
+	MIN a1 a2 d
+
+where a1 and a2 are the identifiers of the two closest
+asteroids and d is the distance between them.  Lastly
+a third line of the the form
+
+	MAX a1 a2 d
+
+where a1 and a2 are the identifiers of the two asteroids
+that are farthest apart and d is the distance between
+them.
+
+To make autojudging easier THE JUDGE REQUIRES THAT
+a1 < a2 in both the MIN and MAX lines.
+
+Distances must be accurate to one part in 10**5 (use
+default floating point format which prints 6 digits of
+precision).
+
+
+Sample Input
+------ -----
+
+-- SAMPLE 1 --
+4
+ 0 0 0
+15 0 0
+25 0 0
+30 0 0
+-- SAMPLE 2 --
+6
+  0  0  0
+-10 10 10
+ 30 10 20
+ 20 10 30
+ 30 30 10
+ 10 30 10
+
+
+Sample Output
+------ ------
+
+-- SAMPLE 1 --
+MIN 3 4 5
+MAX 1 4 30
+-- SAMPLE 2 --
+MIN 3 4 14.1421
+MAX 2 5 44.7214
+
+
+File:	   friends.txt
+Author:	   Bob Walton <walton@seas.harvard.edu>
+Date:	   Sun Oct  1 02:20:39 EDT 2017
+
+The authors have placed this file in the public domain;
+they make no warranty and accept no liability for this
+file.
